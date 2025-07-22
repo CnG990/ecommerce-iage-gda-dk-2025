@@ -77,9 +77,9 @@ Projet IAGE GDA DK 2025/
 
 ## Déploiement
 
-### Frontend (Vercel/Netlify)
+### Frontend (Vercel)
 1. Build de l'application : `npm run build`
-2. Déploiement sur Vercel ou Netlify
+2. Déploiement sur Vercel
 3. Configuration des variables d'environnement
 
 ### Backend (Railway/Render)
@@ -88,9 +88,9 @@ Projet IAGE GDA DK 2025/
 3. Mettre à jour l'URL de l'API dans le frontend
 
 ## Équipe de Développement
-- [Nom du membre 1] - Frontend React
-- [Nom du membre 2] - Backend API
-- [Nom du membre 3] - Intégration et déploiement
+- Cheikh Ngom - Frontend React
+- Balla Niang - Backend API
+- 2 - Intégration et déploiement
 
 ## Licence
 Projet académique - IAGE GDA DK 2025 
