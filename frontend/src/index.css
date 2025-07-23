@@ -2,79 +2,465 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* Variables CSS personnalisées pour la cohérence des couleurs */
+:root {
+  --primary-color: #3b82f6;
+  --secondary-color: #1e40af;
+  --accent-color: #f59e0b;
+  --success-color: #10b981;
+  --danger-color: #ef4444;
+  --warning-color: #f59e0b;
+  --info-color: #06b6d4;
+  --light-color: #f8fafc;
+  --dark-color: #1e293b;
+  --gray-color: #64748b;
+}
 
-@layer base {
-  html {
-    font-family: 'Inter', system-ui, sans-serif;
+/* Styles de base pour une meilleure expérience utilisateur */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--light-color);
+  color: var(--dark-color);
+  line-height: 1.6;
+}
+
+/* Amélioration de la lisibilité */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+/* Styles pour les liens */
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+a:hover {
+  color: var(--secondary-color);
+}
+
+/* Animations personnalisées */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  body {
-    @apply bg-gray-50 text-gray-900;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@layer components {
-  .btn {
-    @apply px-4 py-2 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
   }
-  
-  .btn-primary {
-    @apply bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500;
-  }
-  
-  .btn-secondary {
-    @apply bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500;
-  }
-  
-  .btn-danger {
-    @apply bg-red-600 text-white hover:bg-red-700 focus:ring-red-500;
-  }
-  
-  .btn-success {
-    @apply bg-green-600 text-white hover:bg-green-700 focus:ring-green-500;
-  }
-  
-  .input {
-    @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent;
-  }
-  
-  .card {
-    @apply bg-white rounded-lg shadow-sm border border-gray-200 p-6;
-  }
-  
-  .badge {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
-  }
-  
-  .badge-success {
-    @apply bg-green-100 text-green-800;
-  }
-  
-  .badge-warning {
-    @apply bg-yellow-100 text-yellow-800;
-  }
-  
-  .badge-danger {
-    @apply bg-red-100 text-red-800;
-  }
-  
-  .badge-info {
-    @apply bg-blue-100 text-blue-800;
+  to {
+    transform: translateX(0);
   }
 }
 
-@layer utilities {
-  .text-shadow {
-    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Classes utilitaires personnalisées */
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+.animate-pulse {
+  animation: pulse 2s infinite;
+}
+
+/* Styles pour les cartes de produits */
+.product-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Styles pour les boutons */
+.btn-primary {
+  @apply bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+}
+
+.btn-secondary {
+  @apply bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+}
+
+.btn-success {
+  @apply bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+}
+
+.btn-danger {
+  @apply bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+}
+
+/* Styles pour les formulaires */
+.form-input {
+  @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200;
+}
+
+.form-label {
+  @apply block text-sm font-medium text-gray-700 mb-1;
+}
+
+/* Styles pour les notifications */
+.notification {
+  @apply fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg;
+}
+
+.notification-success {
+  @apply bg-green-500 text-white;
+}
+
+.notification-error {
+  @apply bg-red-500 text-white;
+}
+
+.notification-warning {
+  @apply bg-yellow-500 text-white;
+}
+
+.notification-info {
+  @apply bg-blue-500 text-white;
+}
+
+/* Styles pour le loading spinner */
+.spinner {
+  @apply inline-block w-6 h-6 border-4 border-gray-300 border-t-blue-600 rounded-full animate-spin;
+}
+
+/* Styles pour les modales */
+.modal-overlay {
+  @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50;
+}
+
+.modal-content {
+  @apply bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-6;
+}
+
+/* Styles pour les tableaux */
+.table {
+  @apply w-full border-collapse;
+}
+
+.table th {
+  @apply bg-gray-50 text-left p-3 border-b border-gray-200 font-medium text-gray-700;
+}
+
+.table td {
+  @apply p-3 border-b border-gray-200;
+}
+
+/* Styles pour la navigation */
+.nav-link {
+  @apply text-gray-600 hover:text-blue-600 transition-colors duration-200;
+}
+
+.nav-link-active {
+  @apply text-blue-600 font-medium;
+}
+
+/* Styles pour les badges */
+.badge {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+.badge-primary {
+  @apply bg-blue-100 text-blue-800;
+}
+
+.badge-success {
+  @apply bg-green-100 text-green-800;
+}
+
+.badge-warning {
+  @apply bg-yellow-100 text-yellow-800;
+}
+
+.badge-danger {
+  @apply bg-red-100 text-red-800;
+}
+
+/* Styles pour les cartes */
+.card {
+  @apply bg-white rounded-lg shadow-md p-6;
+}
+
+.card-header {
+  @apply border-b border-gray-200 pb-4 mb-4;
+}
+
+.card-title {
+  @apply text-lg font-semibold text-gray-900;
+}
+
+.card-body {
+  @apply text-gray-600;
+}
+
+/* Styles pour les grilles */
+.grid-responsive {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
+}
+
+/* Styles pour les images */
+.img-responsive {
+  @apply w-full h-auto object-cover;
+}
+
+.img-thumbnail {
+  @apply w-16 h-16 object-cover rounded-lg;
+}
+
+/* Styles pour les icônes */
+.icon {
+  @apply w-5 h-5;
+}
+
+.icon-sm {
+  @apply w-4 h-4;
+}
+
+.icon-lg {
+  @apply w-6 h-6;
+}
+
+/* Styles pour les tooltips */
+.tooltip {
+  @apply relative;
+}
+
+.tooltip-content {
+  @apply absolute z-10 px-2 py-1 text-sm text-white bg-gray-900 rounded opacity-0 invisible transition-all duration-200;
+}
+
+.tooltip:hover .tooltip-content {
+  @apply opacity-100 visible;
+}
+
+/* Styles pour les scrollbars personnalisées */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Styles pour les sélections de texte */
+::selection {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Styles pour les focus visibles */
+.focus-visible:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Styles pour les états de chargement */
+.loading {
+  @apply opacity-50 pointer-events-none;
+}
+
+/* Styles pour les états désactivés */
+.disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+/* Styles pour les messages d'erreur */
+.error-message {
+  @apply text-red-600 text-sm mt-1;
+}
+
+/* Styles pour les messages de succès */
+.success-message {
+  @apply text-green-600 text-sm mt-1;
+}
+
+/* Styles pour les placeholders */
+.placeholder {
+  @apply text-gray-400;
+}
+
+/* Styles pour les états vides */
+.empty-state {
+  @apply text-center py-8 text-gray-500;
+}
+
+/* Styles pour les séparateurs */
+.divider {
+  @apply border-t border-gray-200 my-4;
+}
+
+/* Styles pour les groupes de boutons */
+.button-group {
+  @apply flex space-x-2;
+}
+
+/* Styles pour les menus déroulants */
+.dropdown {
+  @apply relative;
+}
+
+.dropdown-menu {
+  @apply absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50;
+}
+
+.dropdown-item {
+  @apply block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100;
+}
+
+/* Styles pour les paginations */
+.pagination {
+  @apply flex items-center space-x-1;
+}
+
+.pagination-item {
+  @apply px-3 py-2 text-sm border border-gray-300 rounded-md hover:bg-gray-50;
+}
+
+.pagination-item-active {
+  @apply bg-blue-600 text-white border-blue-600;
+}
+
+/* Styles pour les filtres */
+.filter-group {
+  @apply space-y-2;
+}
+
+.filter-label {
+  @apply block text-sm font-medium text-gray-700;
+}
+
+.filter-input {
+  @apply mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500;
+}
+
+/* Styles pour les statistiques */
+.stats-card {
+  @apply bg-white p-6 rounded-lg shadow-sm border border-gray-200;
+}
+
+.stats-number {
+  @apply text-2xl font-bold text-gray-900;
+}
+
+.stats-label {
+  @apply text-sm font-medium text-gray-500;
+}
+
+/* Styles pour les graphiques */
+.chart-container {
+  @apply bg-white p-4 rounded-lg shadow-sm;
+}
+
+/* Styles pour les notifications push */
+.push-notification {
+  @apply fixed bottom-4 right-4 bg-white border border-gray-200 rounded-lg shadow-lg p-4 max-w-sm;
+}
+
+/* Styles pour les confirmations */
+.confirmation-dialog {
+  @apply bg-white rounded-lg shadow-xl p-6 max-w-md mx-auto;
+}
+
+/* Styles pour les tutoriels */
+.tutorial-overlay {
+  @apply fixed inset-0 bg-black bg-opacity-50 z-50;
+}
+
+.tutorial-step {
+  @apply bg-white rounded-lg shadow-lg p-4 max-w-sm;
+}
+
+/* Styles pour les thèmes sombres (optionnel) */
+.dark-mode {
+  @apply bg-gray-900 text-white;
+}
+
+.dark-mode .card {
+  @apply bg-gray-800 border-gray-700;
+}
+
+.dark-mode .form-input {
+  @apply bg-gray-800 border-gray-700 text-white;
+}
+
+/* Styles pour l'accessibilité */
+.sr-only {
+  @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+}
+
+/* Styles pour les impressions */
+@media print {
+  .no-print {
+    display: none !important;
   }
   
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  .print-only {
+    display: block !important;
   }
-  
-  .scrollbar-hide::-webkit-scrollbar {
+}
+
+/* Styles pour les écrans très petits */
+@media (max-width: 640px) {
+  .mobile-hidden {
     display: none;
+  }
+  
+  .mobile-full {
+    width: 100%;
+  }
+}
+
+/* Styles pour les écrans moyens */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .tablet-optimized {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Styles pour les écrans larges */
+@media (min-width: 1025px) {
+  .desktop-optimized {
+    grid-template-columns: repeat(4, 1fr);
   }
 } 
