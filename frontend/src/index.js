@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './index.css';
 import store from './redux/store';
+import ErrorBoundary from './components/common/ErrorBoundary';
 
 // Pages
 import App from './App';
@@ -82,22 +83,30 @@ const router = createBrowserRouter([
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={router} />
-      <ToastContainer 
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
-    </Provider>
-  </React.StrictMode>
-); 
+
+// Composant de gestion d'erreurs global
+const AppWrapper = () => {
+  return (
+    <React.StrictMode>
+      <Provider store={store}>
+        <ErrorBoundary>
+          <RouterProvider router={router} />
+          <ToastContainer 
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+        </ErrorBoundary>
+      </Provider>
+    </React.StrictMode>
+  );
+};
+
+root.render(<AppWrapper />); 

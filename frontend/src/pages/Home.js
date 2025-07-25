@@ -20,9 +20,14 @@ const Home = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (products && products.length > 0) {
-      // Simuler des produits en vedette
-      setFeaturedProducts(products.slice(0, 6));
+    try {
+      if (products && Array.isArray(products) && products.length > 0) {
+        // Simuler des produits en vedette
+        setFeaturedProducts(products.slice(0, 6));
+      }
+    } catch (error) {
+      console.warn('Erreur lors du traitement des produits:', error);
+      setFeaturedProducts([]);
     }
   }, [products]);
 
