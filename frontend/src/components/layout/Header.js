@@ -5,38 +5,38 @@ import { logout } from '../../redux/slices/authSlice';
 import { FaShoppingCart, FaUser, FaSearch, FaBars, FaTimes } from 'react-icons/fa';
 
 const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
+  const { user } = useSelector((state) => state.auth || {});
+  const { items = [] } = useSelector((state) => state.cart || {});
+
+  const cartItemCount = items.reduce((total, item) => total + (item.quantity || 0), 0);
+
+  const handleLogout = () => {
+    try {
+      dispatch(logout());
+      navigate('/');
+    } catch (error) {
+      console.warn('Erreur lors de la déconnexion:', error);
+    }
+  };
+
+  const handleSearch = (e) => {
+    try {
+      e.preventDefault();
+      if (searchTerm.trim()) {
+        navigate(`/products?search=${encodeURIComponent(searchTerm.trim())}`);
+      }
+    } catch (error) {
+      console.warn('Erreur lors de la recherche:', error);
+    }
+  };
+
   try {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [searchTerm, setSearchTerm] = useState('');
-    
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    
-    const { user } = useSelector((state) => state.auth || {});
-    const { items = [] } = useSelector((state) => state.cart || {});
-
-    const cartItemCount = items.reduce((total, item) => total + (item.quantity || 0), 0);
-
-    const handleLogout = () => {
-      try {
-        dispatch(logout());
-        navigate('/');
-      } catch (error) {
-        console.warn('Erreur lors de la déconnexion:', error);
-      }
-    };
-
-    const handleSearch = (e) => {
-      try {
-        e.preventDefault();
-        if (searchTerm.trim()) {
-          navigate(`/products?search=${encodeURIComponent(searchTerm.trim())}`);
-        }
-      } catch (error) {
-        console.warn('Erreur lors de la recherche:', error);
-      }
-    };
-
     return (
       <header className="sticky top-0 z-50 bg-white shadow border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
