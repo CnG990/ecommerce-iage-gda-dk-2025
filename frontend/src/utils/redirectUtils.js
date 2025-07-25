@@ -7,13 +7,18 @@
  * @param {string} currentPath - Le chemin actuel
  */
 export const saveCurrentPage = (currentPath) => {
-  // Ne pas sauvegarder les pages d'authentification
-  if (currentPath && 
-      currentPath !== '/login' && 
-      currentPath !== '/register' && 
-      !currentPath.includes('/admin')) {
-    localStorage.setItem('lastVisitedPage', currentPath);
-    console.log('RedirectUtils - Page sauvegardée:', currentPath);
+  try {
+    // Ne pas sauvegarder les pages d'authentification
+    if (currentPath && 
+        currentPath !== '/login' && 
+        currentPath !== '/register' && 
+        !currentPath.includes('/admin') &&
+        typeof window !== 'undefined') {
+      localStorage.setItem('lastVisitedPage', currentPath);
+      console.log('RedirectUtils - Page sauvegardée:', currentPath);
+    }
+  } catch (error) {
+    console.warn('Erreur saveCurrentPage:', error);
   }
 };
 
@@ -22,12 +27,18 @@ export const saveCurrentPage = (currentPath) => {
  * @returns {string|null} - Le chemin de la dernière page visitée
  */
 export const getLastVisitedPage = () => {
-  const lastPage = localStorage.getItem('lastVisitedPage');
-  if (lastPage && 
-      lastPage !== '/login' && 
-      lastPage !== '/register' && 
-      !lastPage.includes('/admin')) {
-    return lastPage;
+  try {
+    if (typeof window !== 'undefined') {
+      const lastPage = localStorage.getItem('lastVisitedPage');
+      if (lastPage && 
+          lastPage !== '/login' && 
+          lastPage !== '/register' && 
+          !lastPage.includes('/admin')) {
+        return lastPage;
+      }
+    }
+  } catch (error) {
+    console.warn('Erreur getLastVisitedPage:', error);
   }
   return null;
 };
@@ -89,8 +100,14 @@ export const getClientRedirectPath = (user, location) => {
  * Nettoie les données de redirection sauvegardées
  */
 export const clearRedirectData = () => {
-  localStorage.removeItem('lastVisitedPage');
-  console.log('RedirectUtils - Données de redirection nettoyées');
+  try {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('lastVisitedPage');
+      console.log('RedirectUtils - Données de redirection nettoyées');
+    }
+  } catch (error) {
+    console.warn('Erreur clearRedirectData:', error);
+  }
 };
 
 /**

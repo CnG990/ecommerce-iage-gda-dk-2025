@@ -4,26 +4,38 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 const AdminRoute = ({ children }) => {
-  const { user, token } = useSelector((state) => state.auth);
+  const { user, token } = useSelector((state) => state.auth || {});
   const location = useLocation();
 
   useEffect(() => {
     // Ensure token is in localStorage
-    if (token && !localStorage.getItem('token')) {
-      localStorage.setItem('token', token);
+    try {
+      if (token && typeof window !== 'undefined' && !localStorage.getItem('token')) {
+        localStorage.setItem('token', token);
+      }
+    } catch (error) {
+      console.warn('Erreur localStorage AdminRoute:', error);
     }
   }, [token]);
 
   if (!user || !token) {
-    toast.error('Veuillez vous connecter pour accéder à cette page');
+    try {
+      toast.error('Veuillez vous connecter pour accéder à cette page');
+    } catch (error) {
+      console.warn('Erreur toast AdminRoute:', error);
+    }
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   // Check if user has admin role
-  const isAdmin = user.roles?.some(role => role.name === 'admin') || user.isAdmin === true;
+  const isAdmin = user?.roles?.some(role => role.name === 'admin') || user?.isAdmin === true;
 
   if (!isAdmin) {
-    toast.error('Accès non autorisé');
+    try {
+      toast.error('Accès non autorisé');
+    } catch (error) {
+      console.warn('Erreur toast AdminRoute:', error);
+    }
     return <Navigate to="/" replace />;
   }
 

@@ -52,73 +52,125 @@ function App() {
         <Router>
           <div className="flex flex-col min-h-screen bg-gray-50">
             {/* En-tête de l'application avec navigation */}
-            <Header />
+            <ErrorBoundary>
+              <Header />
+            </ErrorBoundary>
             
             {/* Contenu principal avec routage */}
             <main className="flex-grow">
-              <Routes>
-                {/* Routes publiques */}
-                <Route path="/" element={<Home />} />
-                <Route path="/products" element={<Products />} />
-                <Route path="/product/:id" element={<ProductDetail />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                <Route path="/terms-of-service" element={<TermsOfService />} />
-                
-                {/* Routes protégées (utilisateur connecté) */}
-                <Route path="/cart" element={
-                  <PrivateRoute>
-                    <Cart />
-                  </PrivateRoute>
-                } />
-                <Route path="/checkout" element={
-                  <PrivateRoute>
-                    <Checkout />
-                  </PrivateRoute>
-                } />
-                <Route path="/profile" element={
-                  <PrivateRoute>
-                    <Profile />
-                  </PrivateRoute>
-                } />
-                <Route path="/my-orders" element={
-                  <PrivateRoute>
-                    <MyOrders />
-                  </PrivateRoute>
-                } />
-                
-                {/* Routes d'administration (admin uniquement) */}
-                <Route path="/admin" element={
-                  <AdminRoute>
-                    <Dashboard />
-                  </AdminRoute>
-                } />
-                <Route path="/admin/products" element={
-                  <AdminRoute>
-                    <AdminProducts />
-                  </AdminRoute>
-                } />
-                <Route path="/admin/orders" element={
-                  <AdminRoute>
-                    <AdminOrders />
-                  </AdminRoute>
-                } />
-                <Route path="/admin/users" element={
-                  <AdminRoute>
-                    <AdminUsers />
-                  </AdminRoute>
-                } />
-                <Route path="/admin/settings" element={
-                  <AdminRoute>
-                    <AdminSettings />
-                  </AdminRoute>
-                } />
-              </Routes>
+              <ErrorBoundary>
+                <Routes>
+                  {/* Routes publiques */}
+                  <Route path="/" element={
+                    <ErrorBoundary>
+                      <Home />
+                    </ErrorBoundary>
+                  } />
+                  <Route path="/products" element={
+                    <ErrorBoundary>
+                      <Products />
+                    </ErrorBoundary>
+                  } />
+                  <Route path="/product/:id" element={
+                    <ErrorBoundary>
+                      <ProductDetail />
+                    </ErrorBoundary>
+                  } />
+                  <Route path="/login" element={
+                    <ErrorBoundary>
+                      <Login />
+                    </ErrorBoundary>
+                  } />
+                  <Route path="/register" element={
+                    <ErrorBoundary>
+                      <Register />
+                    </ErrorBoundary>
+                  } />
+                  <Route path="/privacy-policy" element={
+                    <ErrorBoundary>
+                      <PrivacyPolicy />
+                    </ErrorBoundary>
+                  } />
+                  <Route path="/terms-of-service" element={
+                    <ErrorBoundary>
+                      <TermsOfService />
+                    </ErrorBoundary>
+                  } />
+                  
+                  {/* Routes protégées (utilisateur connecté) */}
+                  <Route path="/cart" element={
+                    <ErrorBoundary>
+                      <PrivateRoute>
+                        <Cart />
+                      </PrivateRoute>
+                    </ErrorBoundary>
+                  } />
+                  <Route path="/checkout" element={
+                    <ErrorBoundary>
+                      <PrivateRoute>
+                        <Checkout />
+                      </PrivateRoute>
+                    </ErrorBoundary>
+                  } />
+                  <Route path="/profile" element={
+                    <ErrorBoundary>
+                      <PrivateRoute>
+                        <Profile />
+                      </PrivateRoute>
+                    </ErrorBoundary>
+                  } />
+                  <Route path="/my-orders" element={
+                    <ErrorBoundary>
+                      <PrivateRoute>
+                        <MyOrders />
+                      </PrivateRoute>
+                    </ErrorBoundary>
+                  } />
+                  
+                  {/* Routes d'administration (admin uniquement) */}
+                  <Route path="/admin" element={
+                    <ErrorBoundary>
+                      <AdminRoute>
+                        <Dashboard />
+                      </AdminRoute>
+                    </ErrorBoundary>
+                  } />
+                  <Route path="/admin/products" element={
+                    <ErrorBoundary>
+                      <AdminRoute>
+                        <AdminProducts />
+                      </AdminRoute>
+                    </ErrorBoundary>
+                  } />
+                  <Route path="/admin/orders" element={
+                    <ErrorBoundary>
+                      <AdminRoute>
+                        <AdminOrders />
+                      </AdminRoute>
+                    </ErrorBoundary>
+                  } />
+                  <Route path="/admin/users" element={
+                    <ErrorBoundary>
+                      <AdminRoute>
+                        <AdminUsers />
+                      </AdminRoute>
+                    </ErrorBoundary>
+                  } />
+                  <Route path="/admin/settings" element={
+                    <ErrorBoundary>
+                      <AdminRoute>
+                        <AdminSettings />
+                      </AdminRoute>
+                    </ErrorBoundary>
+                  } />
+                </Routes>
+              </ErrorBoundary>
             </main>
             
             {/* Pied de page avec informations de contact */}
-            <Footer />
+            <ErrorBoundary>
+              <Footer />
+            </ErrorBoundary>
           </div>
           
           {/* Configuration des notifications toast */}
