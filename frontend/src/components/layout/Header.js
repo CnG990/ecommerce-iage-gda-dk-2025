@@ -11,10 +11,10 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   
-  const { user } = useSelector((state) => state.auth);
-  const { items } = useSelector((state) => state.cart);
+  const { user } = useSelector((state) => state.auth || {});
+  const { items = [] } = useSelector((state) => state.cart || {});
 
-  const cartItemCount = items.reduce((total, item) => total + item.quantity, 0);
+  const cartItemCount = items.reduce((total, item) => total + (item.quantity || 0), 0);
 
   const handleLogout = () => {
     dispatch(logout());
