@@ -4,10 +4,20 @@ import { toast } from 'react-toastify';
 // Récupérer le panier depuis localStorage
 const getCartFromStorage = () => {
   try {
-    const cart = localStorage.getItem('cart');
-    return cart ? JSON.parse(cart) : [];
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const cart = localStorage.getItem('cart');
+      return cart ? JSON.parse(cart) : [];
+    }
+    return [];
   } catch (error) {
-    console.error('Erreur lors de la récupération du panier:', error);
+    console.warn('Erreur lors de la récupération du panier:', error);
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.removeItem('cart');
+      }
+    } catch (e) {
+      console.warn('Erreur lors de la suppression du panier:', e);
+    }
     return [];
   }
 };
@@ -15,9 +25,11 @@ const getCartFromStorage = () => {
 // Sauvegarder le panier dans localStorage
 const saveCartToStorage = (cartItems) => {
   try {
-    localStorage.setItem('cart', JSON.stringify(cartItems));
+    if (typeof window !== 'undefined' && window.localStorage) {
+      localStorage.setItem('cart', JSON.stringify(cartItems));
+    }
   } catch (error) {
-    console.error('Erreur lors de la sauvegarde du panier:', error);
+    console.warn('Erreur lors de la sauvegarde du panier:', error);
   }
 };
 

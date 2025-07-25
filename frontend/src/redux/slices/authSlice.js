@@ -5,10 +5,20 @@ import authService from '../../services/authService';
 // Fonction sécurisée pour récupérer l'utilisateur du localStorage
 const getUserFromStorage = () => {
   try {
-    const userStr = localStorage.getItem('user');
-    return userStr ? JSON.parse(userStr) : null;
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const userStr = localStorage.getItem('user');
+      return userStr ? JSON.parse(userStr) : null;
+    }
+    return null;
   } catch (error) {
-    localStorage.removeItem('user');
+    console.warn('Erreur lors de la récupération de l\'utilisateur:', error);
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.removeItem('user');
+      }
+    } catch (e) {
+      console.warn('Erreur lors de la suppression de l\'utilisateur:', e);
+    }
     return null;
   }
 };
@@ -16,9 +26,19 @@ const getUserFromStorage = () => {
 // Fonction sécurisée pour récupérer le token du localStorage
 const getTokenFromStorage = () => {
   try {
-    return localStorage.getItem('token') || null;
+    if (typeof window !== 'undefined' && window.localStorage) {
+      return localStorage.getItem('token') || null;
+    }
+    return null;
   } catch (error) {
-    localStorage.removeItem('token');
+    console.warn('Erreur lors de la récupération du token:', error);
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.removeItem('token');
+      }
+    } catch (e) {
+      console.warn('Erreur lors de la suppression du token:', e);
+    }
     return null;
   }
 };
@@ -41,8 +61,14 @@ export const register = createAsyncThunk(
       console.log('Register response:', response);
       
       if (response.success && response.data) {
-        localStorage.setItem('user', JSON.stringify(response.data.user));
-        localStorage.setItem('token', response.data.token);
+        try {
+          if (typeof window !== 'undefined' && window.localStorage) {
+            localStorage.setItem('user', JSON.stringify(response.data.user));
+            localStorage.setItem('token', response.data.token);
+          }
+        } catch (storageError) {
+          console.warn('Erreur localStorage lors de l\'inscription:', storageError);
+        }
         return response.data;
       } else {
         return thunkAPI.rejectWithValue(response.message || 'Une erreur est survenue');
@@ -64,8 +90,14 @@ export const login = createAsyncThunk(
       console.log('Login response:', response);
       
       if (response.success && response.data) {
-        localStorage.setItem('user', JSON.stringify(response.data.user));
-        localStorage.setItem('token', response.data.token);
+        try {
+          if (typeof window !== 'undefined' && window.localStorage) {
+            localStorage.setItem('user', JSON.stringify(response.data.user));
+            localStorage.setItem('token', response.data.token);
+          }
+        } catch (storageError) {
+          console.warn('Erreur localStorage lors de la connexion:', storageError);
+        }
         return response.data;
       } else {
         return thunkAPI.rejectWithValue(response.message || 'Une erreur est survenue');
@@ -82,10 +114,17 @@ export const login = createAsyncThunk(
 export const logout = createAsyncThunk('auth/logout', async () => {
   try {
     await authService.logout();
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
   } catch (error) {
     console.error('Logout error:', error);
+  } finally {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+      }
+    } catch (storageError) {
+      console.warn('Erreur localStorage lors de la déconnexion:', storageError);
+    }
   }
 });
 
