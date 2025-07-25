@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// Configuration de l'URL API avec fallback
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
 // Configuration globale d'axios
@@ -11,13 +12,18 @@ axios.defaults.headers.common['Content-Type'] = 'application/json';
 // Intercepteur pour ajouter le token d'authentification
 axios.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    try {
+      const token = localStorage.getItem('token');
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    } catch (error) {
+      console.warn('Erreur lors de la récupération du token:', error);
     }
     return config;
   },
   (error) => {
+    console.error('Erreur dans l\'intercepteur de requête:', error);
     return Promise.reject(error);
   }
 );
@@ -28,14 +34,27 @@ axios.interceptors.response.use(
     return response;
   },
   (error) => {
+    console.error('Erreur API:', error);
+    
+    // Gestion des erreurs réseau
+    if (!error.response) {
+      console.warn('Erreur réseau - API non accessible');
+      return Promise.reject(error);
+    }
+    
     if (error.response?.status === 401) {
-      // Token expiré ou invalide
-      localStorage.removeItem('token');
-      // Rediriger vers la page de connexion si nécessaire
-      if (window.location.pathname !== '/login') {
-        window.location.href = '/login';
+      try {
+        // Token expiré ou invalide
+        localStorage.removeItem('token');
+        // Rediriger vers la page de connexion si nécessaire
+        if (window.location.pathname !== '/login') {
+          window.location.href = '/login';
+        }
+      } catch (localStorageError) {
+        console.warn('Erreur localStorage:', localStorageError);
       }
     }
+    
     return Promise.reject(error);
   }
 );

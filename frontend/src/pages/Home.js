@@ -12,11 +12,15 @@ const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
 
   useEffect(() => {
-    dispatch(fetchProducts());
+    try {
+      dispatch(fetchProducts());
+    } catch (error) {
+      console.warn('Erreur lors du chargement des produits:', error);
+    }
   }, [dispatch]);
 
   useEffect(() => {
-    if (products.length > 0) {
+    if (products && products.length > 0) {
       // Simuler des produits en vedette
       setFeaturedProducts(products.slice(0, 6));
     }
@@ -171,9 +175,15 @@ const Home = () => {
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+            {featuredProducts && featuredProducts.length > 0 ? (
+              featuredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))
+            ) : (
+              <div className="col-span-full text-center py-8">
+                <p className="text-gray-500">Aucun produit disponible pour le moment.</p>
+              </div>
+            )}
           </div>
           <div className="text-center mt-12">
             <Link
