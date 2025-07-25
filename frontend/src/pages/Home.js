@@ -8,7 +8,7 @@ import { FaArrowRight, FaTruck, FaShieldAlt, FaHeadset, FaPhone, FaEnvelope, FaM
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { products, loading } = useSelector((state) => state.products);
+  const { products = [], loading = false } = useSelector((state) => state.products || {});
   const [featuredProducts, setFeaturedProducts] = useState([]);
 
   useEffect(() => {
